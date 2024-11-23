@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Response } from 'express';
 import { ApiResponse } from '../types';
 
-const sendResponse = <T>(res: Response, response: ApiResponse<T>) => {
+const sendResponse = <T>(res: Response, response: ApiResponse<T>): any => {
   const responseObj: ApiResponse<T> = {
     success: response.success,
     message: response.message,
