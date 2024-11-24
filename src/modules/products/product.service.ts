@@ -15,9 +15,18 @@ export const findProductById = async (
   return Product.findById(productId);
 };
 
-export const updateProduct = async (
+export const updateProduct = (
   productId: string,
-  product: IProduct,
+  product: Partial<IProduct>,
 ): Promise<IProduct | null> => {
-  return Product.findByIdAndUpdate(productId, product, { new: true });
+  return Product.findByIdAndUpdate(productId, product, {
+    new: true,
+    runValidators: true,
+  });
+};
+
+export const deleteProductByProductId = async (
+  productId: string,
+): Promise<IProduct | null> => {
+  return Product.findByIdAndDelete(productId);
 };

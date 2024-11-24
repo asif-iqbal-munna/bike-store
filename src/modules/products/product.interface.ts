@@ -1,4 +1,5 @@
-import { HydratedDocument, Model } from 'mongoose';
+import { Model } from 'mongoose';
+import { ValidationReturn } from '../../types';
 
 type ProductCategory = 'Mountain' | 'Road' | 'Hybrid' | 'Electric';
 
@@ -12,16 +13,18 @@ interface IProduct {
   inStock: boolean;
 }
 
+export type AllowedProductKeys = keyof IProduct;
+
 interface IProductMethods {
   fullName(): string;
 }
 
 interface ProductModel
   extends Model<IProduct, Record<string, never>, IProductMethods> {
-  createWithFullName(
+  validateUpdateKeys(
     // eslint-disable-next-line no-unused-vars
-    name: string,
-  ): Promise<HydratedDocument<IProduct, IProductMethods>>;
+    payload: Partial<IProduct>,
+  ): Promise<ValidationReturn>;
 }
 
 export { IProduct, IProductMethods, ProductModel };

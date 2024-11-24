@@ -10,8 +10,6 @@ export const globalErrorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log({ errName: error.name });
-
   if (error.name === 'ValidationError')
     return sendResponse(res, {
       success: false,
@@ -46,6 +44,15 @@ export const globalErrorHandler = (
       stack: error.stack,
     });
 
+  if (error.name === 'Error') {
+    return sendResponse(res, {
+      success: false,
+      code: 400,
+      message: error.message,
+      error,
+      stack: error.stack,
+    });
+  }
   return sendResponse(res, {
     success: false,
     code: 500,

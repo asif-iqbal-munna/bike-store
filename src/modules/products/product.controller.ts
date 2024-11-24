@@ -5,7 +5,11 @@ import {
   findProductById,
   findProducts,
   updateProduct,
+  deleteProductByProductId,
 } from './product.service';
+import { IProduct } from './product.interface';
+import Product from './product.model';
+import { ValidationReturn } from '../../types';
 
 export const createProductHandler = async (
   req: Request,
@@ -67,6 +71,14 @@ export const getProductById = async (
 
     const product = await findProductById(productId);
 
+    if (!product) {
+      return sendResponse(res, {
+        success: false,
+        message: 'Bike not found',
+        code: 404,
+      });
+    }
+
     return sendResponse(res, {
       success: true,
       message: 'Bike retrieved successfully',
@@ -91,15 +103,57 @@ export const updateProductHandler = async (
       return sendResponse(res, {
         success: false,
         message: 'Bike not found',
+        code: 404,
       });
     }
 
-    const response = await updateProduct(productId, req.body);
+    const payload: Partial<IProduct> = req.body;
+
+    const { valid, message }: ValidationReturn =
+      await Product.validateUpdateKeys(payload);
+
+    if (!valid) {
+      return sendResponse(res, {
+        success: false,
+        message,
+        code: 400,
+      });
+    }
+
+    const response = await updateProduct(productId, payload);
 
     return sendResponse(res, {
       success: true,
       message: 'Bike updated successfully',
       data: response,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteProductById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { productId } = req.params;
+
+    const product = await findProductById(productId);
+
+    if (!product) {
+      return sendResponse(res, {
+        success: false,
+        message: 'Bike not found',
+        code: 404,
+      });
+    }
+    await deleteProductByProductId(productId);
+    return sendResponse(res, {
+      success: true,
+      message: 'Bike deleted successfully',
+      data: {},
     });
   } catch (error) {
     next(error);

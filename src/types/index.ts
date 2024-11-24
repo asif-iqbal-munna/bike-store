@@ -7,3 +7,8 @@ export type ApiResponse<T> = {
   error?: unknown;
   stack?: unknown;
 };
+
+export type ValidationReturn = {
+  valid: boolean;
+  message: string;
+};

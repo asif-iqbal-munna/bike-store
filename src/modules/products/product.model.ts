@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { IProduct, IProductMethods, ProductModel } from './product.interface';
-
+import { ValidationReturn } from '../../types';
 const productSchema = new Schema<IProduct, ProductModel, IProductMethods>(
   {
     name: { type: String, required: true, trim: true, unique: true },
@@ -17,10 +17,30 @@ const productSchema = new Schema<IProduct, ProductModel, IProductMethods>(
 );
 
 productSchema.static(
-  'createWithFullName',
-  function createWithFullName(name: string) {
-    const [firstName, lastName] = name.split(' ');
-    return this.create({ firstName, lastName });
+  'validateUpdateKeys',
+  function validateUpdateKeys(payload: Partial<IProduct>): ValidationReturn {
+    const validKeys: (keyof IProduct)[] = [
+      'name',
+      'brand',
+      'price',
+      'description',
+      'category',
+      'quantity',
+      'inStock',
+    ];
+
+    const invalidKeys = Object.keys(payload).filter(
+      (key) => !validKeys.includes(key as keyof IProduct),
+    );
+
+    if (invalidKeys.length > 0) {
+      return {
+        valid: false,
+        message: `Invalid keys in payload: ${invalidKeys.join(', ')}`,
+      };
+    }
+
+    return { valid: true, message: 'Success' };
   },
 );
 

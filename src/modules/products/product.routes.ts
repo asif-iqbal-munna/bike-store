@@ -4,9 +4,10 @@ import {
   getAllProducts,
   getProductById,
   updateProductHandler,
+  deleteProductById,
 } from './product.controller';
 import { validateResource } from '../../middlewares/validateRequest';
-import { ProductSchema } from './product.schema';
+import { ProductSchema, ProductSchemaUpdate } from './product.schema';
 
 const router = express.Router();
 
@@ -16,6 +17,11 @@ router.get('/', getAllProducts);
 
 router.get('/:productId', getProductById);
 
-router.put('/:productId', updateProductHandler);
+router.put(
+  '/:productId',
+  validateResource(ProductSchemaUpdate),
+  updateProductHandler,
+);
+router.delete('/:productId', deleteProductById);
 
 export default router;
