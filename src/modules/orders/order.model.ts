@@ -23,8 +23,6 @@ orderSchema.method('fullName', function fullName(): string {
 
 orderSchema.pre('save', async function (this: any, next: any) {
   try {
-    console.log('executing pre save');
-
     const product = await Product.findOne({
       _id: this.product,
       inStock: true,
@@ -46,7 +44,6 @@ orderSchema.pre('save', async function (this: any, next: any) {
 
 orderSchema.post('save', async function (doc: any, next: any) {
   try {
-    console.log('executing post save');
     await Product.updateOne({ _id: doc.product }, [
       {
         $set: {
