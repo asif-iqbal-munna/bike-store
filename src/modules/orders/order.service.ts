@@ -8,12 +8,20 @@ export const createOrder = async (order: IOrder): Promise<IOrder> => {
 };
 
 export const findTotalRevenue = async () => {
-  return Order.aggregate([
+  const result = await Order.aggregate([
     {
       $group: {
         _id: null,
         totalRevenue: { $sum: '$totalPrice' },
       },
     },
+    {
+      $project: {
+        _id: 0,
+        totalRevenue: 1,
+      },
+    },
   ]);
+
+  return { totalRevenue: result[0].totalRevenue };
 };

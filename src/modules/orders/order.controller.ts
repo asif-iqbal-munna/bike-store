@@ -29,7 +29,6 @@ export const calculateRevenue = async (
 ) => {
   try {
     const revenue = await findTotalRevenue();
-    console.log({ revenue });
 
     return sendResponse(res, {
       success: true,
