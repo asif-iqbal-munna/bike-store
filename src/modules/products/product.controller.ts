@@ -75,7 +75,7 @@ export const getProductById = async (
       return sendResponse(res, {
         success: false,
         message: 'Bike not found',
-        code: 404,
+        statusCode: 404,
       });
     }
 
@@ -103,7 +103,7 @@ export const updateProductHandler = async (
       return sendResponse(res, {
         success: false,
         message: 'Bike not found',
-        code: 404,
+        statusCode: 404,
       });
     }
 
@@ -116,7 +116,7 @@ export const updateProductHandler = async (
       return sendResponse(res, {
         success: false,
         message,
-        code: 400,
+        statusCode: 400,
       });
     }
 
@@ -146,7 +146,7 @@ export const deleteProductById = async (
       return sendResponse(res, {
         success: false,
         message: 'Bike not found',
-        code: 404,
+        statusCode: 404,
       });
     }
     await deleteProductByProductId(productId);

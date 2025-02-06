@@ -13,7 +13,7 @@ export const globalErrorHandler = (
   if (error.name === 'ValidationError')
     return sendResponse(res, {
       success: false,
-      code: 400,
+      statusCode: 400,
       message: 'Input validation error',
       error,
       stack: error.stack,
@@ -21,7 +21,7 @@ export const globalErrorHandler = (
   if (error.name === 'CastError')
     return sendResponse(res, {
       success: false,
-      code: 400,
+      statusCode: 400,
       message: 'Input type error',
       error,
       stack: error.stack,
@@ -29,7 +29,7 @@ export const globalErrorHandler = (
   if (error.code === 11000)
     return sendResponse(res, {
       success: false,
-      code: 400,
+      statusCode: 400,
       message: 'Input contains duplicate data',
       error,
       stack: error.stack,
@@ -38,7 +38,7 @@ export const globalErrorHandler = (
   if (error.name === 'ZodError')
     return sendResponse(res, {
       success: false,
-      code: 400,
+      statusCode: 400,
       message: error.issues[0].message,
       error: error.issues[0],
       stack: error.stack,
@@ -47,7 +47,7 @@ export const globalErrorHandler = (
   if (error.name === 'Error') {
     return sendResponse(res, {
       success: false,
-      code: 400,
+      statusCode: 400,
       message: error.message,
       error,
       stack: error.stack,
@@ -55,7 +55,7 @@ export const globalErrorHandler = (
   }
   return sendResponse(res, {
     success: false,
-    code: 500,
+    statusCode: 500,
     message: 'Something went wrong',
     error,
     stack: error.stack,
