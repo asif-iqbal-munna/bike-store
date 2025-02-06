@@ -6,6 +6,7 @@ const sendResponse = <T>(res: Response, response: ApiResponse<T>): any => {
   const responseObj: ApiResponse<T> = {
     success: response.success,
     message: response.message,
+    statusCode: response.statusCode || 500,
   };
 
   if (response.data) {
@@ -17,7 +18,7 @@ const sendResponse = <T>(res: Response, response: ApiResponse<T>): any => {
     responseObj['stack'] = response.stack;
   }
 
-  return res.status(response.code ? response.code : 500).json(responseObj);
+  return res.status(response.statusCode || 500).json(responseObj);
 };
 
 export default sendResponse;
